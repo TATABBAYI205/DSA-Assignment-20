@@ -1,0 +1,60 @@
+package Assignment20;
+
+import java.util.LinkedList;
+import java.util.Queue;
+
+class Node2 
+{
+    int data;
+    Node2 left, right;
+    public Node2(int item) 
+    {
+        data = item;
+        left = right = null;
+    }
+}
+class BinarySearchTree 
+{
+    Node2 constructBST(int[] levelOrder) 
+    {
+        if (levelOrder.length == 0)
+            return null;
+        Node2 root = new Node2(levelOrder[0]);
+        Queue<Node2> queue = new LinkedList<>();
+        queue.add(root);
+        int i = 1;
+        while (!queue.isEmpty() && i < levelOrder.length) 
+        {
+            Node2 current = queue.poll();
+            if (i < levelOrder.length && levelOrder[i] < current.data) 
+            {
+                current.left = new Node2(levelOrder[i]);
+                queue.add(current.left);
+                i++;
+            }
+            if (i < levelOrder.length && levelOrder[i] > current.data) {
+                current.right = new Node2(levelOrder[i]);
+                queue.add(current.right);
+                i++;
+            }
+        }
+        return root;
+    }
+    void inOrderTraversal(Node2 root) 
+    {
+        if (root != null) {
+            inOrderTraversal(root.left);
+            System.out.print(root.data + " ");
+            inOrderTraversal(root.right);
+        }
+    }
+    public static void main(String[] args) 
+    {
+        int[] levelOrder = {7, 4, 12, 3, 6, 8, 1, 5, 10};
+        BinarySearchTree bst = new BinarySearchTree();
+        Node2 root = bst.constructBST(levelOrder);
+        System.out.println("BST:");
+        bst.inOrderTraversal(root);
+    }
+}
+

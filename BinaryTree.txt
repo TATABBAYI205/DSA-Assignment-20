@@ -1,0 +1,57 @@
+package Assignment20;
+
+class Node1 
+{
+    int data;
+    Node1 left, right;
+    public Node1(int item) 
+    {
+        data = item;
+        left = right = null;
+    }
+}
+class BinaryTree 
+{
+    Node1 root;
+    class Result 
+    {
+        int sum;
+        Node1 subtree;
+        Result(int sum, Node1 subtree) 
+        {
+            this.sum = sum;
+            this.subtree = subtree;
+        }
+     }
+   Result findMaxSubtreeSum(Node1 root) 
+   {
+        if (root == null)
+        return new Result(0, null);
+        Result leftResult = findMaxSubtreeSum(root.left);
+        Result rightResult = findMaxSubtreeSum(root.right);
+        int subtreeSum = root.data + leftResult.sum + rightResult.sum;
+        int maxSum = Math.max(subtreeSum, Math.max(leftResult.sum, rightResult.sum));
+        Node1 maxSubtree;
+        if (maxSum == subtreeSum)
+            maxSubtree = root;
+        else if (maxSum == leftResult.sum)
+            maxSubtree = leftResult.subtree;
+        else
+            maxSubtree = rightResult.subtree;
+         return new Result(maxSum, maxSubtree);
+    }
+    public static void main(String[] args) 
+    {
+        BinaryTree tree = new BinaryTree();
+        tree.root = new Node1(1);
+        tree.root.left = new Node1(-2);
+        tree.root.right = new Node1(3);
+        tree.root.left.left = new Node1(4);
+        tree.root.left.right = new Node1(5);
+        tree.root.right.left = new Node1(-6);
+        tree.root.right.right = new Node1(2);
+        Result result = tree.findMaxSubtreeSum(tree.root);
+        System.out.println( result.sum);
+    }
+}
+

@@ -1,0 +1,37 @@
+package Assignment20;
+
+class TraversalOrder 
+{
+    boolean canRepresentBST(int[] arr, int n) 
+    {
+        if (n == 0)
+            return true;
+        int index = -1;
+        for (int i = 1; i < n; i++) 
+        {
+            if (arr[i] > arr[0]) 
+            {
+                index = i;
+                break;
+            }
+        }
+        if (index == -1)
+            return true;
+        for (int i = index; i < n; i++) 
+        {
+            if (arr[i] < arr[0])
+                return false;
+        }
+        boolean left = canRepresentBST(arr, index);
+        boolean right = canRepresentBST(arr, n - index);
+        return left && right;
+    }
+    public static void main(String[] args) {
+        int[] arr = {7, 4, 12, 3, 6, 8, 1, 5, 10};
+        int n = arr.length;
+        TraversalOrder to = new TraversalOrder();
+        boolean result = to.canRepresentBST(arr, n);
+        System.out.println(result ? "Yes" : "No");
+    }
+}
+
